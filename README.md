@@ -9,7 +9,7 @@ PolyIDE takes inspiration from online competitive coding platforms and aims to p
 <!-- Features -->
 ## Features
 
-### Frontend Features
+#### Frontend Features
 
 -   Queue-based Job Handling:
         When a user submits a code execution request, the backend utilizes a Bull queue powered by Redis.
@@ -40,7 +40,7 @@ PolyIDE takes inspiration from online competitive coding platforms and aims to p
 -   Polling Concept for Output Retrieval: 
     After submitting the code for execution, the client periodically sends requests to the server at regular intervals to check if the code execution has completed. This follows the polling concept, enabling the frontend to retrieve the output once it's available.
 
-### Backend Features
+#### Backend Features
 
  - Bull Queue for Concurrent Requests: 
  To handle multiple concurrent requests from users and provide a smooth user experience, your project utilizes the Bull queue. The Bull queue manages the execution of tasks asynchronously, allowing for efficient processing of user requests.
@@ -64,7 +64,7 @@ PolyIDE takes inspiration from online competitive coding platforms and aims to p
 To run the project, you must have npm, redis and docker environment
 on your local machine.
 
-### For backend
+#### For backend
 
 1. Clone the repo
    ```sh
@@ -98,7 +98,7 @@ on your local machine.
    npm run dev
    ```
 
-### For frontend
+#### For frontend
 
 1. Move to the frontend folder
    ```sh
@@ -115,69 +115,74 @@ on your local machine.
 <br />
 
 <!-- design architecture -->
-### Frontend Architecture
+## System Architecture
 
-    - User Interaction:
+#### Frontend Architecture
+
+- User Interaction:
         The user lands on the web page and interacts with the PolyIDE interface.
         The user writes code in the code editor and provides input data.
 
-    - Initiating Code Execution:
-        The user clicks on the "Run" button to initiate the code execution process.
-        The client sends a POST request (/run) to the server, including the code and input data.
+- Initiating Code Execution:
+The user clicks on the "Run" button to initiate the code execution process.
+The client sends a POST request (/run) to the server, including the code and input data.
 
-    - Server-side Processing:
-        The server receives the POST request and validates the code.
-        If the code validation is successful, the server saves the code, input data, and necessary information (like language and job ID) in the MongoDB database with a pending status.
-        If the code validation fails, the server returns a failure message to the client.
+- Server-side Processing:
+The server receives the POST request and validates the code.
+If the code validation is successful, the server saves the code, input data, and necessary information (like language and job ID) in the MongoDB database with a pending status.
+If the code validation fails, the server returns a failure message to the client.
 
-    - Polling for Code Status:
-        Upon receiving the job ID from the server, the client initiates polling.
-        The client sends a GET request (/status?id=) to the server at regular intervals, providing the job ID as a query parameter.
-        The purpose of polling is to check the status of the code execution.
+- Polling for Code Status:
+Upon receiving the job ID from the server, the client initiates polling.
+The client sends a GET request (/status?id=) to the server at regular intervals, providing the job ID as a query parameter.
+The purpose of polling is to check the status of the code execution.
 
-    - Displaying Code Output:
-        The server receives the GET request for status and checks the status of the code execution associated with the provided job ID.
-        After some time, when the code execution is completed, the server responds to the GET request with the status and output of the code execution.
-        The client receives the response and displays the output to the user, either as a success message or a failure message.
+- Displaying Code Output:
+The server receives the GET request for status and checks the status of the code execution associated with the provided job ID.
+After some time, when the code execution is completed, the server responds to the GET request with the status and output of the code execution.
+The client receives the response and displays the output to the user, either as a success message or a failure message.
+
 <img src="./frontend-design.jpg" alt="frontend-design"/>
 
-### Backend Architecture
-    - Queue-based Job Handling:
-        When a user submits a code execution request, the backend utilizes a Bull queue powered by Redis.
-        The job request is pushed into the queue, allowing for efficient handling of multiple concurrent requests.
-        The user is returned a response with a pending status and a unique job ID.
+#### Backend Architecture
+- Queue-based Job Handling:
+When a user submits a code execution request, the backend utilizes a Bull queue powered by Redis.
+The job request is pushed into the queue, allowing for efficient handling of multiple concurrent requests.
+The user is returned a response with a pending status and a unique job ID.
 
-    - Job Management and Code Validation:
-        The job ID and associated information (code, input data, language) are stored in the MongoDB database.
-        The backend performs code validation, checking for the presence of any blacklisted libraries or potential security risks.
-        If the code passes validation, it proceeds to the next steps. Otherwise, an error message is stored in the database for the job ID.
+- Job Management and Code Validation:
+The job ID and associated information (code, input data, language) are stored in the MongoDB database.
+The backend performs code validation, checking for the presence of any blacklisted libraries or potential security risks.
+If the code passes validation, it proceeds to the next steps. Otherwise, an error message is stored in the database for the job ID.
 
-    - Docker Container Setup and Code Execution:
-        An isolated Docker container is created to provide a controlled environment for code execution.
-        The code file and input data are transferred to the Docker container.
-        The code is executed within the container, which ensures security and prevents interference with the host system.
+- Docker Container Setup and Code Execution:
+An isolated Docker container is created to provide a controlled environment for code execution.
+The code file and input data are transferred to the Docker container.
+The code is executed within the container, which ensures security and prevents interference with the host system.
 
-    - Output Storage and Retrieval:
-        After code execution, the backend stores the appropriate output (success or error message) in the database, associated with the job ID.
-        The output can include the executed code's result or any error messages generated during execution.
+- Output Storage and Retrieval:
+After code execution, the backend stores the appropriate output (success or error message) in the database, associated with the job ID.
+The output can include the executed code's result or any error messages generated during execution.
 
-    - Cleanup and Completion:
-        Once the output is stored, the input and output files are flushed to maintain data privacy.
-        The Docker container associated with the job is terminated, ensuring resource efficiency and preventing conflicts with subsequent executions.
+- Cleanup and Completion:
+Once the output is stored, the input and output files are flushed to maintain data privacy.
+The Docker container associated with the job is terminated, ensuring resource efficiency and preventing conflicts with subsequent executions.
+
 <img src="./backend-design.jpg" alt="backend-design"/>
 <br />
+
 <!-- outputs -->
 ## Results
 <img src="./Frontend.png" alt="frontend"/>
 
-- ### Multiple Themes Options
+#### Multiple Themes Options
 <img src="./themes.png" alt="themes"/>
 
-- ### Code Example
+#### Code Example
 <img src="./code example.png" alt="code-example"/>
 
-- ### Syntax Error
+#### Syntax Error
 <img src="./error.png" alt="error"/>
 
-- ### Timeout Error
+#### Timeout Error
 <img src="./timeout.png" alt="timeout"/>
