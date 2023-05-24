@@ -1,0 +1,6 @@
+FROM ubuntu
+
+WORKDIR /usr/src/app
+
+RUN apt-get update
+RUN apt install build-essential -y
