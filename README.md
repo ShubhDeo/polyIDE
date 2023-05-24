@@ -10,35 +10,10 @@ PolyIDE takes inspiration from online competitive coding platforms and aims to p
 ## Features
 
 #### Frontend Features
-
--   Queue-based Job Handling:
-        When a user submits a code execution request, the backend utilizes a Bull queue powered by Redis.
-        The job request is pushed into the queue, allowing for efficient handling of multiple concurrent requests.
-        The user is returned a response with a pending status and a unique job ID.
-
--    Job Management and Code Validation:
-        The job ID and associated information (code, input data, language) are stored in the MongoDB database.
-        The backend performs code validation, checking for the presence of any blacklisted libraries or potential security risks.
-        If the code passes validation, it proceeds to the next steps. Otherwise, an error message is stored in the database for the job ID.
-
--    Docker Container Setup and Code Execution:
-        An isolated Docker container is created to provide a controlled environment for code execution.
-        The code file and input data are transferred to the Docker container.
-        The code is executed within the container, which ensures security and prevents interference with the host system.
-
--    Output Storage and Retrieval:
-        After code execution, the backend stores the appropriate output (success or error message) in the database, associated with the job ID.
-        The output can include the executed code's result or any error messages generated during execution.
-
--    Cleanup and Completion:
-        Once the output is stored, the input and output files are flushed to maintain data privacy.
-        The Docker container associated with the job is terminated, ensuring resource efficiency and preventing conflicts with subsequent executions.Utilizes React Ace Editor: The frontend incorporates the React Ace Editor, which provides a code editor interface with features like syntax highlighting, auto-completion, and code folding. It offers a similar look and feel to the VS Code editor.
--    Customizable IDE 
-        Users can choose from multiple themes to personalize the appearance of the code editor. This allows them to select a theme that suits their preferences or provides better readability. The frontend enables users to adjust the font size of the code editor according to their comfort and readability preferences. 
--   Language Support: 
-    PolyIDE frontend offers support for multiple programming languages, including Python and C++. This allows users to write and execute code in their preferred language.
--   Polling Concept for Output Retrieval: 
-    After submitting the code for execution, the client periodically sends requests to the server at regular intervals to check if the code execution has completed. This follows the polling concept, enabling the frontend to retrieve the output once it's available.
+- Utilizes React Ace Editor: The frontend incorporates the React Ace Editor, which provides a code editor interface with features like syntax highlighting, auto-completion, and code folding. It offers a similar look and feel to the VS Code editor.
+- Customize IDE: Users can choose from multiple themes to personalize the appearance of the code editor. This allows them to select a theme that suits their preferences or provides better readability. The frontend enables users to adjust the font size of the code editor according to their comfort and readability preferences. Additionally, they can set the tab size, which affects the indentation of the code.
+- Language Support: PolyIDE frontend offers support for multiple programming languages, including Python and C++. This allows users to write and execute code in their preferred language.
+- Polling Concept for Output Retrieval: After submitting the code for execution, the client periodically sends requests to the server at regular intervals to check if the code execution has completed. This follows the polling concept, enabling the frontend to retrieve the output once it's available.
 
 #### Backend Features
 
