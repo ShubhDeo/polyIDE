@@ -125,10 +125,9 @@ When a user submits a code execution request, the backend utilizes a Bull queue 
 The job request is pushed into the queue, allowing for efficient handling of multiple concurrent requests.
 The user is returned a response with a pending status and a unique job ID.
 
-- Job Management and Code Validation:
-The job ID and associated information (code, input data, language) are stored in the MongoDB database.
-The backend performs code validation, checking for the presence of any blacklisted libraries or potential security risks.
-If the code passes validation, it proceeds to the next steps. Otherwise, an error message is stored in the database for the job ID.
+- Code Validation and Job Management:
+The backend performs code validation, checking for the presence of any blacklisted libraries or potential security risks. If the code passes validation, it proceeds to the next steps. Otherwise, an error message is passed to the user.
+The code and input files are created in the server and are given a file ID. The fileID and the language extension is first stored in the database with a pending status and the job ID is given as a response to the user.
 
 - Docker Container Setup and Code Execution:
 An isolated Docker container is created to provide a controlled environment for code execution.
