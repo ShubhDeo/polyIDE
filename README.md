@@ -31,6 +31,9 @@ PolyIDE takes inspiration from online competitive coding platforms and aims to p
 <a href="https://www.npmjs.com/package/bull" target="_blank">
    <img src="https://raw.githubusercontent.com/OptimalBits/bull/e4e64572a3ad259d9cb90d5dec81e8565eeadca1/support/logo%402x.png" alt="bull" width="80" height="50" />
 </a>
+<a href="https://redis.io" target="_blank">
+   <img src="https://miro.medium.com/v2/resize:fit:1400/1*Jed-UVwaIqf16oq5f8ATDQ.png" alt="redis" width="80" height="50" />
+</a>
 
 <br />
 
