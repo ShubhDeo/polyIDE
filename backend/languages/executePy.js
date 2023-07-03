@@ -1,6 +1,7 @@
 const path = require('path');
 const execute = require('../utilities/execute');
 const deleteFiles = require('../utilities/deleteFiles')
+const redisClient = require('../utilities/redisDb.js');
 
 
 const executePy = (job) => {
@@ -27,6 +28,7 @@ const executePy = (job) => {
             job["output"]=output;
             await job.save();
             outputTaken=true;
+            await redisClient.del(`${job._id}`);
 
             execute(`docker kill ${containerId} && docker rm ${containerId}`)
                 .then(res => {
@@ -38,6 +40,7 @@ const executePy = (job) => {
         })
         .catch(async (error) => {
             console.log(error);
+            await redisClient.del(`${job._id}`);
             if(!outputTaken) {
                 job["status"]="error";
                 job["output"]=JSON.stringify(error);

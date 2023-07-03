@@ -1,12 +1,14 @@
 const path = require('path');
 const execute = require('../utilities/execute');
 const deleteFiles = require('../utilities/deleteFiles');
+const redisClient = require('../utilities/redisDb.js');
 
 
 const executeCpp = async (job) => {
     const {fileId} = job;
     const filePath = path.join(__dirname,'..', 'codes', `${fileId}.cpp`);
     const inputPath = path.join(__dirname,'..', 'inputs', `${fileId}.txt`);
+    
 
     // create a docker container in detach mode, interactive and use bash
     // transfer code file and input file inside container using docker cp
@@ -36,6 +38,7 @@ const executeCpp = async (job) => {
             job["output"]=output;
             await job.save();
             outputTaken=true;
+            await redisClient.del(`${job.id}`);
 
             execute(`docker kill ${containerId} && docker rm ${containerId}`)
                 .then(res => {
@@ -47,7 +50,7 @@ const executeCpp = async (job) => {
         })
         .catch(async (error) => {
             console.log(error);
-
+            await redisClient.del(`${job.id}`);
             if(!outputTaken) {
                 job["status"]="error";
                 job["output"]=JSON.stringify(error);

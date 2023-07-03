@@ -7,8 +7,10 @@ const {connectDB} = require('./utilities/db.js');
 const {Job} = require("./models/JobSchema.js");
 const {addJobToQueue} = require('./jobQueue.js')
 const validateCode = require('./utilities/validateCode.js')
+const redisClient = require('./utilities/redisDb.js')
 
 const app = express();
+
 
 dotenv.config();
 
@@ -22,21 +24,35 @@ app.use(express.json());
 connectDB();
 
 
+
 app.get('/', (req, res) => {
     return res.json({message: "hello world"});
 })
 
 app.get('/status', async (req, res) => {
+    //use cache
     try {
         const jobId = req.query.id;
         if(jobId === undefined) {
             return res.status(400).json({success: false, error: "Missing query id."})
         }
+
+        const cache = await redisClient.get(`${jobId}`);
+
+        if(cache !== null) {
+            console.log('cache hit')
+            return res.status(200).json(JSON.parse(cache));
+        }
+        console.log('cache miss')
+
         const job = await Job.findById(jobId);
         if(job===undefined) {
             return res.status(404).json({
                 success:false, error: "Invalid Job ID."
             })
+        }
+        if(job.status == 'pending') {
+            await redisClient.set(`${jobId}`, JSON.stringify(job));
         }
         return res.status(200).json(job);
     } catch (error) {
@@ -64,20 +80,23 @@ app.post('/run', async (req,res) => {
             language,
             fileId,
         }).save();
-
+        await redisClient.set(`${job.id}`, JSON.stringify(job));
         const jobId = job["_id"];
+
+        //create a new cache.
 
         addJobToQueue(jobId);
         res.status(201).json( {
             success: true,
             jobId
         })
+
         
         // we sent the job id to the user and then the code will be executed.
 
         // we need to run the file and send the response back.
     }catch (error) {
-        return res.status(500).json({succcess: false, error: JSON.stringify(err)});
+        return res.status(500).json({succcess: false, error: JSON.stringify(error)});
     }
 
 })
