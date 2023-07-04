@@ -20,7 +20,7 @@ const executePy = (job) => {
         .then(res => {
             console.log("files transferred.");
             job["startedAt"]=new Date();
-            return execute(`docker exec ${containerId} bash -c "python3 code.py<input.txt"`, {timeout: 10000, maxBuffer: 50000});
+            return execute(`docker exec ${containerId} bash -c "python3 code.py<input.txt"`, {timeout: 10000, maxBuffer: 5000000});
         })
         .then(async (output) => {
             job["completedAt"]=new Date();
