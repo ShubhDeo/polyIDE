@@ -21,6 +21,7 @@ PolyIDE takes inspiration from online competitive coding platforms and aims to p
  To handle multiple concurrent requests from users and provide a smooth user experience, your project utilizes the Bull queue. The Bull queue manages the execution of tasks asynchronously, allowing for efficient processing of user requests.
  - Docker Container for Code Execution: For security and isolation purposes, a Docker container is created to run the code in a controlled environment. This ensures that the executed code does not interfere with the system. The Docker container provides a sandboxed execution environment for enhanced security.
  - Timeout and MaxBuffer Settings: To execute the code efficiently, the Docker environment is configured with a timeout setting. This ensures that code execution is terminated if it exceeds a specified time limit, preventing potential performance issues. Additionally, the Docker environment has a maxBuffer setting, which restricts the amount of output data that can be buffered during code execution.
+ -  Redis cache is implemented to enhance the user experience during the polling process by providing fast responses.
 <br />
 
 <!-- Tech Used -->
@@ -29,6 +30,9 @@ PolyIDE takes inspiration from online competitive coding platforms and aims to p
 <a href="https://www.docker.com/" target="_blank"> <img src="https://www.docker.com/sites/default/files/d8/styles/role_icon/public/2019-07/Moby-logo.png?itok=sYH_JEaJ" alt="docker" width="58" height="50"/> </a>
 <a href="https://www.npmjs.com/package/bull" target="_blank">
    <img src="https://raw.githubusercontent.com/OptimalBits/bull/e4e64572a3ad259d9cb90d5dec81e8565eeadca1/support/logo%402x.png" alt="bull" width="80" height="50" />
+</a>
+<a href="https://redis.io" target="_blank">
+   <img src="https://miro.medium.com/v2/resize:fit:1400/1*Jed-UVwaIqf16oq5f8ATDQ.png" alt="redis" width="80" height="50" />
 </a>
 
 <br />
@@ -137,6 +141,9 @@ The code is executed within the container, which ensures security and prevents i
 - Output Storage and Retrieval:
 After code execution, the backend stores the appropriate output (success or error message) in the database, associated with the job ID.
 The output can include the executed code's result or any error messages generated during execution.
+
+- Caching Data:
+ Redis cache is implemented to enhance the user experience during the polling process by providing fast responses. The cache stores the status of jobs, allowing quick retrieval and reducing the need for database queries, resulting in improved response times for users.
 
 - Cleanup and Completion:
 Once the output is stored, the input and output files are flushed to maintain data privacy.
