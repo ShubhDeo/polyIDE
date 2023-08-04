@@ -9,7 +9,8 @@ JobQueue.on('failed', (error) => { //for listening to errors.
     console.log(error.failedReason);
 })
 
-JobQueue.process(async ({data}) => {
+const numWorkers = 2; // Number of worker processes to run in parallel
+JobQueue.process(numWorkers, async ({data}) => {
     //'data' is the data that we passed through while adding in queue.
     const {id: jobId} = data;
     const job = await Job.findById(jobId);
