@@ -17,8 +17,8 @@ PolyIDE takes inspiration from online competitive coding platforms and aims to p
 
 #### Backend Features
 
- - Bull Queue for Concurrent Requests: 
- To handle multiple concurrent requests from users and provide a smooth user experience, your project utilizes the Bull queue. The Bull queue manages the execution of tasks asynchronously, allowing for efficient processing of user requests.
+ - Bull Queue for Concurrent Requests and Parallel Job Processing: 
+ To handle multiple concurrent requests from users and provide a smooth user experience, your project utilizes the Bull queue. The Bull queue manages the execution of tasks asynchronously, allowing for efficient processing of user requests. Incorporated multiple workers in Bull queue for parallel job processing
  - Docker Container for Code Execution: For security and isolation purposes, a Docker container is created to run the code in a controlled environment. This ensures that the executed code does not interfere with the system. The Docker container provides a sandboxed execution environment for enhanced security.
  - Timeout and MaxBuffer Settings: To execute the code efficiently, the Docker environment is configured with a timeout setting. This ensures that code execution is terminated if it exceeds a specified time limit, preventing potential performance issues. Additionally, the Docker environment has a maxBuffer setting, which restricts the amount of output data that can be buffered during code execution.
  -  Redis cache is implemented to enhance the user experience during the polling process by providing fast responses.
